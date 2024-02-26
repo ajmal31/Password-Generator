@@ -19,10 +19,11 @@ function App() {
    const [passwordLengthExceed,setPasswordLengthExceed]=useState(false)
    
    //Handle Copy
-   const handleCopy = () => {
+   const handleCopy =async () => {
 
-      if (!copyRef.current) {
+      if (!copy) {
          setCopy(true)
+         await navigator.clipboard.writeText(generatedPassword)
          toast.success("Text copied", { position: 'top-right', className: "font-Outfit bg-gray-300  text-sm" })
 
       }
@@ -33,12 +34,13 @@ function App() {
    }
    //Handle Generate Passwords
    const generatePassword = () => {
-      console.log("password length",passwordLength)
+
       if (passwordLength.length <= 0) setLengthValidation(true)
       else if(passwordLength>15) setPasswordLengthExceed(true)
       else if(!numbers&&!symbols&&!uppercase&&!lowerCase) setExtrasValidation(true)
       else {
          const k=genPassword(passwordLength,numbers,symbols,uppercase,lowerCase)
+         console.log("geneated passowrd",k)
          setGeneratedPassword(k)
          setCreatedPassword([...createdPasswords, k])
       }
